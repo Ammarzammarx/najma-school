@@ -305,6 +305,37 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);min-height:100vh;colo
 .pdf-reader-wrap .pdf-note{font-size:12px;color:var(--muted);text-align:center;padding:6px;}
 
 
+
+/* ── STORE ── */
+.store-wrap{padding:16px;display:flex;flex-direction:column;gap:14px;}
+.store-balance{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;text-align:center;border:1px solid rgba(255,255,255,.1);}
+.store-balance .bal-num{font-size:32px;font-weight:800;color:#FFD700;}
+.store-balance .bal-lbl{font-size:13px;color:var(--muted);margin-top:4px;}
+.store-item{background:rgba(255,255,255,.06);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.1);}
+.store-item-ico{font-size:36px;flex-shrink:0;}
+.store-item-info{flex:1;}
+.store-item-name{font-size:15px;font-weight:700;color:white;margin-bottom:4px;}
+.store-item-desc{font-size:12px;color:var(--muted);}
+.store-item-cost{font-size:14px;font-weight:800;color:#FFD700;margin-top:6px;}
+.store-btn{background:var(--purple);color:white;border:none;border-radius:10px;padding:10px 16px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.store-btn:hover{background:var(--pd);}
+.store-btn:disabled{background:rgba(255,255,255,.1);color:var(--muted);cursor:not-allowed;}
+.store-btn.pending{background:rgba(255,165,0,.2);color:orange;border:1px solid orange;}
+.notif-wrap{padding:16px;display:flex;flex-direction:column;gap:10px;}
+.notif-item{background:rgba(255,255,255,.06);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.1);}
+.notif-item.notif-new{border-color:var(--purple);background:rgba(83,74,183,.15);}
+.notif-title{font-size:14px;font-weight:700;color:white;margin-bottom:4px;}
+.notif-body{font-size:13px;color:var(--muted);}
+.notif-time{font-size:11px;color:rgba(255,255,255,.3);margin-top:6px;}
+.notif-badge{display:inline-block;background:var(--danger);color:white;border-radius:50%;width:18px;height:18px;font-size:11px;font-weight:800;line-height:18px;text-align:center;margin-right:4px;}
+/* ── ADMIN REQUESTS ── */
+.req-item{background:rgba(255,255,255,.05);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.08);margin-bottom:10px;}
+.req-info{flex:1;}
+.req-name{font-size:14px;font-weight:700;color:white;}
+.req-detail{font-size:12px;color:var(--muted);margin-top:3px;}
+.req-approve{background:var(--teal);color:white;border:none;border-radius:8px;padding:8px 14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.req-reject{background:var(--danger);color:white;border:none;border-radius:8px;padding:8px 14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-right:6px;}
+
 /* ── MCQ OPTIONS ── */
 .mcq-options{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
 .mcq-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;color:white;cursor:pointer;transition:all .2s;text-align:right;display:flex;align-items:center;gap:12px;}
@@ -447,7 +478,9 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);min-height:100vh;colo
       <button class="fchip" onclick="filterStudents('10',this)">الصف 10</button>
       <button class="fchip" onclick="filterStudents('11',this)">الصف 11</button>
       <button class="fchip" onclick="filterStudents('12',this)">الصف 12</button>
+      <button class="fchip" onclick="showAdminRewards(this)" id="admin-rewards-btn">🎁 المكافآت</button>
     </div>
+    <div id="admin-rewards-panel" style="display:none;"></div>
     <div class="stbl">
       <div class="stbl-hdr"><div></div><div>الطالب</div><div>الصف</div><div>الشعبة</div><div>النقاط</div><div>حذف</div></div>
       <div id="students-list"></div>
@@ -525,7 +558,12 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);min-height:100vh;colo
       <button class="pd-item danger" onclick="openModal('logout-modal')"><div class="pd-icon">🚪</div>تسجيل الخروج</button>
     </div>
   </div>
-  <div class="home-body">
+  <div id="home-content" class="home-body">
+    <div style="display:flex;gap:8px;padding:8px 12px 0;justify-content:center;">
+      <button onclick="switchHomeTab('home',this)" class="htab-btn active" style="flex:1;background:rgba(255,255,255,.08);border:none;border-radius:10px;padding:8px;font-family:Tajawal,sans-serif;font-size:13px;font-weight:700;color:white;cursor:pointer;">🏠 الرئيسية</button>
+      <button onclick="switchHomeTab('store',this)" class="htab-btn" style="flex:1;background:rgba(255,255,255,.08);border:none;border-radius:10px;padding:8px;font-family:Tajawal,sans-serif;font-size:13px;font-weight:700;color:white;cursor:pointer;">🛒 المتجر</button>
+      <button onclick="switchHomeTab('notifs',this)" class="htab-btn" style="flex:1;background:rgba(255,255,255,.08);border:none;border-radius:10px;padding:8px;font-family:Tajawal,sans-serif;font-size:13px;font-weight:700;color:white;cursor:pointer;">🔔 الإشعارات</button>
+    </div>
     <div class="score-strip">
       <div><div class="strip-greeting">مرحباً،</div><div class="strip-name" id="home-name">الطالب</div><div class="strip-meta" id="home-meta">الصف</div></div>
       <div class="pts-box"><div class="num" id="home-pts">0</div><div class="lbl">⭐ نجمة</div></div>
@@ -1889,8 +1927,11 @@ function renderReaderTab(body){
   }
   body.innerHTML = `
   <div class="pdf-reader-wrap">
-    <div class="pdf-note">📕 اقرأ الكتاب مباشرة — يمكنك التكبير والتصغير</div>
-    <iframe src="${pdfUrl}" allowfullscreen></iframe>
+    <div class="pdf-note" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>📕 اقرأ الكتاب مباشرة</span>
+      <button onclick="toggleFullscreenBook()" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:8px;padding:6px 12px;font-family:Tajawal,sans-serif;font-size:12px;cursor:pointer;">⛶ ملء الشاشة</button>
+    </div>
+    <iframe id="book-iframe" src="${pdfUrl}" allowfullscreen></iframe>
   </div>`;
 }
 
@@ -2279,6 +2320,10 @@ function resetClassScreen(){
   session.grade=session.section='';
 }
 function selectGrade(grade,btn){
+  if(grade==='11'||grade==='12'){
+    showToast('⚠️ التسجيل متاح للصف العاشر فقط حالياً');
+    return;
+  }
   session.grade=grade; session.section='';
   document.querySelectorAll('.cgrid3 .choice-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
@@ -2438,6 +2483,12 @@ window.openDeleteModal  = openDeleteModal;
 window.confirmDelete    = confirmDelete;
 window.openSubject      = openSubject;
 window.switchTab        = switchTab;
+window.switchHomeTab    = switchHomeTab;
+window.requestReward    = requestReward;
+window.showAdminRewards = showAdminRewards;
+window.handleReward     = handleReward;
+window.toggleFullscreenBook = toggleFullscreenBook;
+window.filterStudents   = filterStudents;
 window.renderReaderTab  = renderReaderTab;
 window.startExam        = startExam;
 window.answerMCQ        = answerMCQ;
@@ -2447,6 +2498,210 @@ window.openWithdraw     = openWithdraw;
 window.confirmWithdraw  = confirmWithdraw;
 window.retryExam        = retryExam;
 window.pickBook         = pickBook;
+
+
+// ════════════════════════════════════════════
+// STORE ITEMS — قائمة المتجر
+// ════════════════════════════════════════════
+const STORE_ITEMS = [
+  { id:'vacation', name:'عطلة مدرسية', emoji:'🏖️', desc:'احصل على يوم عطلة إضافي', cost:1500 },
+  { id:'sport',    name:'حصة رياضة إضافية', emoji:'🏃', desc:'حصة رياضة إضافية مع الفريق', cost:2000 },
+];
+
+// ── Home Tab Switcher ──
+function switchHomeTab(tab, btn){
+  document.querySelectorAll('.htab-btn').forEach(b=>{
+    b.style.background='rgba(255,255,255,.08)';
+    b.style.color='white';
+  });
+  btn.style.background='var(--purple)';
+
+  const body = document.getElementById('home-content');
+  if(!body) return;
+
+  // أظهر/أخفِ المحتوى الأصلي
+  const mainContent = body.querySelector('.score-strip');
+  const booksGrid   = body.querySelector('.books-grid');
+  const lbCard      = body.querySelector('.lb-card');
+  const secTitles   = body.querySelectorAll('.sec-title');
+  const tabsBar     = body.querySelector('[style*="htab-btn"]')?.parentElement;
+
+  [mainContent, booksGrid, lbCard, ...secTitles].forEach(el=>{
+    if(el) el.style.display = tab==='home' ? '' : 'none';
+  });
+
+  // أزل المحتوى الديناميكي القديم
+  const old = body.querySelector('#dynamic-tab-content');
+  if(old) old.remove();
+
+  if(tab==='home') return;
+
+  const div = document.createElement('div');
+  div.id = 'dynamic-tab-content';
+  body.appendChild(div);
+
+  if(tab==='store') buildStoreContent(div);
+  else if(tab==='notifs') buildNotifsContent(div);
+}
+
+// ── STORE ──
+function buildStoreContent(body){
+  if(!body) return;
+  const stars = session.stars || 0;
+  let itemsHTML = STORE_ITEMS.map(item => {
+    const canAfford = stars >= item.cost;
+    return `
+    <div class="store-item">
+      <div class="store-item-ico">${item.emoji}</div>
+      <div class="store-item-info">
+        <div class="store-item-name">${item.name}</div>
+        <div class="store-item-desc">${item.desc}</div>
+        <div class="store-item-cost">⭐ ${item.cost.toLocaleString()} نجمة</div>
+      </div>
+      <button class="store-btn" ${canAfford?'':'disabled'} onclick="requestReward('${item.id}','${item.name}',${item.cost})">
+        ${canAfford ? 'اطلب' : 'نجوم غير كافية'}
+      </button>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `
+  <div class="store-wrap">
+    <div class="store-balance">
+      <div class="bal-num">⭐ ${stars.toLocaleString()}</div>
+      <div class="bal-lbl">نجومك الحالية</div>
+    </div>
+    ${itemsHTML}
+  </div>`;
+}
+
+async function requestReward(itemId, itemName, cost){
+  if((session.stars||0) < cost){ showToast('⚠️ نجومك غير كافية'); return; }
+
+  // تحقق من طلب سابق
+  try{
+    const existSnap = await getDoc(doc(db,'rewards',session.uid+'_'+itemId));
+    if(existSnap.exists() && existSnap.data().status==='pending'){
+      showToast('⏳ طلبك قيد المراجعة من المدير'); return;
+    }
+  }catch(e){}
+
+  const reward = {
+    uid: session.uid,
+    nickname: session.nickname,
+    grade: session.grade,
+    section: session.section,
+    itemId, itemName, cost,
+    status: 'pending',
+    requestedAt: new Date().toLocaleDateString('ar-SA')
+  };
+
+  try{
+    await setDoc(doc(db,'rewards', session.uid+'_'+itemId), reward);
+    // خصم النجوم
+    session.stars = (session.stars||0) - cost;
+    await updateStudent(session.uid, { stars: session.stars });
+    const idx = studentsDB.findIndex(s=>s.uid===session.uid);
+    if(idx!==-1) studentsDB[idx].stars = session.stars;
+    showToast('✅ تم إرسال طلبك للمدير!');
+    // إعادة بناء المتجر
+    const body = document.getElementById('home-content');
+    if(body) buildStoreContent(body);
+  }catch(e){
+    showToast('⚠️ حدث خطأ، حاول مجدداً');
+  }
+}
+
+// ── NOTIFICATIONS ──
+async function buildNotifsContent(body){
+  if(!body) return;
+  body.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);">⏳ جاري التحميل...</div>`;
+  try{
+    const snap = await getDoc(doc(db,'notifications',session.uid));
+    const notifs = snap.exists() ? (snap.data().list||[]) : [];
+    if(notifs.length===0){
+      body.innerHTML = `<div class="notif-wrap"><div style="text-align:center;padding:40px;color:var(--muted);"><div style="font-size:40px;margin-bottom:12px;">🔔</div><div>لا توجد إشعارات بعد</div></div></div>`;
+      return;
+    }
+    const notifsHTML = notifs.reverse().map(n=>`
+      <div class="notif-item ${n.read?'':'notif-new'}">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-body">${n.body}</div>
+        <div class="notif-time">${n.date}</div>
+      </div>`).join('');
+    body.innerHTML = `<div class="notif-wrap">${notifsHTML}</div>`;
+    // علّم كمقروء
+    await updateDoc(doc(db,'notifications',session.uid), { list: notifs.map(n=>({...n,read:true})) });
+  }catch(e){
+    body.innerHTML = `<div class="notif-wrap"><div style="text-align:center;padding:40px;color:var(--muted);">لا توجد إشعارات</div></div>`;
+  }
+}
+
+// ── ADMIN REWARDS PANEL ──
+async function showAdminRewards(btn){
+  document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('students-list').style.display = 'none';
+  const panel = document.getElementById('admin-rewards-panel');
+  panel.style.display = 'block';
+  panel.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);">⏳ جاري التحميل...</div>`;
+
+  try{
+    const snap = await getDocs(collection(db,'rewards'));
+    const requests = snap.docs.map(d=>d.data()).filter(r=>r.status==='pending');
+    if(requests.length===0){
+      panel.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);">✅ لا توجد طلبات معلقة</div>`;
+      return;
+    }
+    panel.innerHTML = requests.map(r=>`
+      <div class="req-item">
+        <div class="req-info">
+          <div class="req-name">${r.nickname} — الصف ${r.grade}/${r.section}</div>
+          <div class="req-detail">${r.itemName} · ⭐ ${r.cost} نجمة · ${r.requestedAt}</div>
+        </div>
+        <button class="req-reject" onclick="handleReward('${r.uid}','${r.itemId}','${r.nickname}','${r.itemName}',false)">رفض</button>
+        <button class="req-approve" onclick="handleReward('${r.uid}','${r.itemId}','${r.nickname}','${r.itemName}',true)">موافقة ✓</button>
+      </div>`).join('');
+  }catch(e){
+    panel.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted);">حدث خطأ</div>`;
+  }
+}
+
+async function handleReward(uid, itemId, nickname, itemName, approved){
+  try{
+    const rewardRef = doc(db,'rewards', uid+'_'+itemId);
+    await updateDoc(rewardRef, { status: approved?'approved':'rejected' });
+
+    // إرسال إشعار للطالب
+    const notifRef = doc(db,'notifications', uid);
+    const snap = await getDoc(notifRef);
+    const existing = snap.exists() ? (snap.data().list||[]) : [];
+    const newNotif = approved ? {
+      title: '🎉 تمت الموافقة على مكافأتك!',
+      body: `تمت الموافقة على طلبك (${itemName}). راجع قسم الإدارة في المدرسة لتحديد موعد صرف مكافأتك.`,
+      date: new Date().toLocaleDateString('ar-SA'),
+      read: false
+    } : {
+      title: '❌ تم رفض طلب المكافأة',
+      body: `تم رفض طلبك (${itemName}) من قبل المدير.`,
+      date: new Date().toLocaleDateString('ar-SA'),
+      read: false
+    };
+    await setDoc(notifRef, { list: [...existing, newNotif] });
+
+    showToast(approved ? `✅ تمت الموافقة لـ ${nickname}` : `❌ تم رفض طلب ${nickname}`);
+    showAdminRewards(document.getElementById('admin-rewards-btn'));
+  }catch(e){
+    showToast('⚠️ حدث خطأ');
+  }
+}
+
+// ── FULLSCREEN BOOK ──
+function toggleFullscreenBook(){
+  const iframe = document.getElementById('book-iframe');
+  if(!iframe) return;
+  if(iframe.requestFullscreen) iframe.requestFullscreen();
+  else if(iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+}
 
 // ════════════════════════════════════════════
 // INIT — تهيئة Firebase والتحقق من الجلسة
